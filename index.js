@@ -3,6 +3,7 @@ let mongodb = require("mongodb").MongoClient;
 // let mongodb = require("mongodb");
 let todoApp = express();
 let db;
+todoApp.use(express.static("public"));
 
 let connectionString =
     "mongodb+srv://Jenine:Ronnyk36@cluster0.sjnnt6x.mongodb.net/TodoApp?retryWrites=true&w=majority";
@@ -57,7 +58,7 @@ todoApp.get("/", function(req, res) {
     </ul>
     
   </div>
-  
+  <script src = "script.js"></script>
 </body>
 </html>`);
     });
