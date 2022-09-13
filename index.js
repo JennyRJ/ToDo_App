@@ -14,7 +14,7 @@ mongodb.connect(
         todoApp.listen(3000);
     }
 );
-
+todoApp.use(express.json());
 todoApp.use(express.urlencoded({ extended: false }));
 
 todoApp.get("/", function(req, res) {
@@ -68,4 +68,11 @@ todoApp.post("/create-item", function (req, res) {
   db.collection("items").insertOne({ text: req.body.item }, function () {
     res.redirect("/");
   });
+});
+todoApp.post("/update-item", function (req, res) {
+  db.collection("items").findOneAndUpdate(
+    a,
+    { $set: { text: req.body.text } },
+    c
+  );
 });
