@@ -3,10 +3,12 @@ document.addEventListener("click", function(e) {
         let userInput = prompt("Enter your desired words");
         // console.log(userInput);
         axios
-            .post("/update-item", { text: userInput })
-            .then(function() {})
+            .post("/update-item", { text: userInput, id: e.target.getAttribute() })
+            .then(function() {
+                //something loading
+            })
             .catch(function() {
-                console.log("");
+                console.log("Please try again");
             });
     }
 });

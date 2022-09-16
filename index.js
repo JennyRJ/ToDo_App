@@ -49,7 +49,7 @@ todoApp.get("/", function(req, res) {
         return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
         <span class="item-text">${item.text}</span>
         <div>
-          <button class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
+          <button data-id ='${item._id}' class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
           <button class="delete-me btn btn-danger btn-sm">Delete</button>
         </div>
       </li>`;
@@ -58,6 +58,7 @@ todoApp.get("/", function(req, res) {
     </ul>
     
   </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src = "script.js"></script>
 </body>
 </html>`);
@@ -71,8 +72,10 @@ todoApp.post("/create-item", function (req, res) {
 });
 todoApp.post("/update-item", function (req, res) {
   db.collection("items").findOneAndUpdate(
-    a,
+    { _id: new mongodb.objectId(req.body.id) },
     { $set: { text: req.body.text } },
-    c
+    function () {
+      res.send("success");
+    }
   );
 });
