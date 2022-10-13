@@ -21,10 +21,10 @@ todoApp.use(express.json());
 todoApp.use(express.urlencoded({ extended: false }));
 
 todoApp.get("/", function(req, res) {
-            db.collection("items")
-                .find()
-                .toArray(function(err, items) {
-                        res.send(`<!DOCTYPE html>
+    db.collection("items")
+        .find()
+        .toArray(function(err, items) {
+            res.send(`<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -47,49 +47,38 @@ todoApp.get("/", function(req, res) {
     
     <ul id = 'item-list' class="list-group pb-5">
       
-    ${items
-      .map(function (item) {
-        return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-        <span class="item-text">${item.text}</span>
-        <div>
-          <button data-id ='${item._id}' class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
-          <button data-id ='${item._id}' class ="delete-me btn btn-danger btn-sm">Delete</button>
-        </div>
-      </li>`;
-      })
-      .join("")}
     </ul>
     
   </div>
+  <script>
+  let items = ${JSON.stringify(items)}
+  
+  </script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src = "script.js"></script>
 </body>
 </html>`);
-    });
+        });
 });
 
-todoApp.post("/create-item", function (req, res) {
-  db.collection("items").insertOne(
-    { text: req.body.text },
-    function (err, info) {
-      res.json(info.ops[0]);
-    }
-  );
+todoApp.post("/create-item", function(req, res) {
+    db.collection("items").insertOne({ text: req.body.text },
+        function(err, info) {
+            res.json(info.acknowledged);
+        }
+    );
 });
-todoApp.post("/update-item", function (req, res) {
-  db.collection("items").findOneAndUpdate(
-    { _id: new ObjectId(req.body.id) },
-    { $set: { text: req.body.text } },
-    function () {
-      res.send("success");
-    }
-  );
+todoApp.post("/update-item", function(req, res) {
+    db.collection("items").findOneAndUpdate({ _id: new ObjectId(req.body.id) }, { $set: { text: req.body.text } },
+        function() {
+            res.send("success");
+        }
+    );
 });
-todoApp.post("/delete-item", function (req, res) {
-  db.collection("items").deleteOne(
-    { _id: new ObjectId(req.body.id) },
-    function () {
-      res.send("'Success");
-    }
-  );
+todoApp.post("/delete-item", function(req, res) {
+    db.collection("items").deleteOne({ _id: new ObjectId(req.body.id) },
+        function() {
+            res.send("'Success");
+        }
+    );
 });

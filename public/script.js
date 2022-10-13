@@ -1,15 +1,22 @@
 function itemTemplate(item) {
     return `<li class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">
-        <span class="item-text">${item.text}</span>
+        <span class =  "item-text">${item.text}</span>
         <div>
           <button data-id ='${item._id}' class="edit-me btn btn-secondary btn-sm mr-1">Edit</button>
           <button data-id ='${item._id}' class ="delete-me btn btn-danger btn-sm">Delete</button>
         </div>
       </li>`;
 }
+//initial page render
+let ourHTML = items
+    .map(function(item) {
+        return itemTemplate(item);
+    })
+    .join("");
+document.getElementById("item-list").insertAdjacentHTML("beforeend", ourHTML);
+//create feature
 
 let createField = document.getElementById("create-field");
-//create feature
 document.getElementById("create-form").addEventListener("submit", function(e) {
     e.preventDefault();
     axios
@@ -17,12 +24,10 @@ document.getElementById("create-form").addEventListener("submit", function(e) {
             text: createField.value,
         })
         .then(function(response) {
-            //create html for a new item
+            //html for the new item
             document
                 .getElementById("item-list")
-                .insertAdjacentHTML("beforeEnd", itemTemplate(response.data));
-            createField.value = "";
-            createField.focus();
+                .insertAdjacentHTML("beforeend", itemTemplate(response.data));
         })
         .catch(function() {
             console.log("Please try again");
@@ -48,8 +53,8 @@ document.addEventListener("click", function(e) {
     //update feature
     if (e.target.classList.contains("edit-me")) {
         let userInput = prompt(
-            "Enter your desired words",
-            e.target.parentElement.parentElement.querySelector(".item-text").innerHTML
+            "Enter your desired words"
+            // e.target.parentElement.parentElement.querySelector(".item-text").innerHTML
         );
         // console.log(userInput);
         if (userInput) {
